@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<p>Note that for this example to work in Chrome, you must enable the<br>
+ "Experimental Web Platform Features" flag in chrome://flags.
+<div id="scroller">
+  <div id="contents"></div>
+</div>
+<div id="modal">
+  <p>The background image should be pleasantly blurred under this box.</p>
+  <p>This effect is difficult to achieve with a polyfill, particularly in the case where the backdrop moves or changes with respect to the dialog element.</p>
+  <p style="font-size:20px;text-align:center;">Please try scrolling up/down in the image...</p>
+</div>
+</html>
+<style>
+body {
+ color: #333;
+ font-family: sans-serif;
+ font-size: 16px;
+ line-height: 1.5;
+}
+#scroller {
+  top: 0; left:0;
+  width: 500px;
+  height: 500px;
+  overflow: scroll;
+  text-align: center;
+}
+#contents {
+  height: 900px;
+  width: 500px;
+  background-image: url('art.jpg');
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+      pointer-events:none;
+
+}
+#modal {
+ position: absolute;
+ top: 150px;
+ left: 75px;
+ width: 300px;
+ backdrop-filter: blur(10px);
+ background-color: rgba(255, 255, 255, 0.5);  
+ max-width: 50%;
+ padding: 25px;
+ border-radius: 25px;
+}
+
+</style>
+<script type="text/javascript">
+  document.getElementById("scroller").scrollTop = 200;
+</script>
