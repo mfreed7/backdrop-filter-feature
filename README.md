@@ -79,7 +79,7 @@ Using backdrop-filter is easy. Assuming you want a dialog box that has a "froste
 </style>
 ```
 
-[Here is a live demo](examples/scrollable.html) showing the filtering effect applied to a dialog over a scrollable image. Note that to see the effect, you need to enable the "Experimental Web Platform Features" flag in Chrome.
+[Here is a live demo](https://mfreed7.github.io/backdrop-filter-feature/examples/scrollable.html) showing the filtering effect applied to a dialog over a scrollable image. Note that to see the effect, you need to enable the "Experimental Web Platform Features" flag in Chrome.
 
 
 ## The specification
