@@ -1,4 +1,4 @@
-# Backdrop-filter
+# Backdrop-filter Explainer
 
 ## Introduction
 Backdrop-filter is a proposed CSS property that applies one or more filters to the "backdrop" of an element. The "backdrop" basically<sup>1</sup> means all of the painted content that lies behind the element. This allows designers to construct "frosted glass" dialog boxes, video overlays, translucent navigation headers, and more.
