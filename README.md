@@ -1,14 +1,14 @@
 # Backdrop-filter Explainer
 
 ## Introduction
-Backdrop-filter is a proposed CSS property that applies one or more filters to the "backdrop" of an element. The "backdrop" basically<sup>1</sup> means all of the painted content that lies behind the element. This allows designers to construct "frosted glass" dialog boxes, video overlays, translucent navigation headers, and more.
+Backdrop-filter is a CSS property that applies one or more filters to the "backdrop" of an element. The "backdrop" basically<sup>1</sup> means all of the painted content that lies behind the element. This allows designers to construct "frosted glass" dialog boxes, video overlays, translucent navigation headers, and more.
 
 The backdrop-filter feature is easy to use. One simply needs to create an element with a partially transparent background, and apply the `backdrop-filter: {filters};` style to that element. The specified filters will be applied to the painted content **behind** the element, prior to drawing the element itself.
 
 <sub><sup>1</sup> See the detailed spec for the precise definition of the "backdrop". It is defined as almost everything behind the page, except in some circumstances where a DOM ancestor of the backdrop-filtered element contains filters or opacity or a few other things.</sub>
 
 ## Why is this needed? Who wants it?
-Ever since Webkit shipped a prefixed version of this feature [in 2015](https://webkit.org/blog/3632/introducing-backdrop-filters), developers have been asking for Chromium to implement it. The [main Chromium feature tracking bug](https://crbug.com/497522) has **529** stars as of March 8, 2019. A number of web design blogs highlight this "cool" feature, and bemoan the lack of Chromium support. It is clear from the comments on [the bug](https://crbug.com/497522), and in the general discussions around the web, that this feature is highly desired by designers. We should make it available to them.
+Ever since Webkit shipped a prefixed version of this feature [in 2015](https://webkit.org/blog/3632/introducing-backdrop-filters), developers have been asking for Chromium to implement it. The [main Chromium feature tracking bug](https://crbug.com/497522) has **573** stars as of May 20, 2019. A number of web design blogs highlight this "cool" feature, and bemoan the lack of Chromium support. It is clear from the comments on [the bug](https://crbug.com/497522), and in the general discussions around the web, that this feature is highly desired by designers. We should make it available to them.
 
 Here are a few such blog posts:
 * https://ferdychristant.com/please-help-make-backdrop-filter-a-reality-f81805ba3d52
@@ -52,13 +52,13 @@ The backdrop-filter CSS property solves the problems described above, and meets 
 
 The implementation of this feature in Chromium is complex, but not overly so, due to the adoption of reasonable spec language defining the "Backdrop Root". The backdrop-filter style is plumbed through to the `cc::EffectNode` for the element, and on to the `viz::RenderPass`. In the renderer, when this renderpass is encountered:
 
- 1. A readback of the destination graphics texture is performed. This contains the [Backdrop Image](https://mfreed7.github.io/fxtf-drafts/filter-effects-2/Overview.html#BackdropRoot).
+ 1. A readback of the destination graphics texture is performed. This contains the [Backdrop Image](https://drafts.fxtf.org/filters-2/#BackdropRoot).
  2. The filters are applied to this readback.
  3. The filtered image is clipped to the rounded-corner rect of the element's border.
  4. This image is drawn into the texture for the backdrop-filtered element, before any other contents.
  5. The rest of the backdrop-filtered element and children are rendered.
 
-Because of the way the Backdrop Root is defined (see [the spec](https://mfreed7.github.io/fxtf-drafts/filter-effects-2/Overview.html#BackdropRoot)), at step #1, only the nearest ancestor render surface is needed. No additional rasterization needs to take place, and this leads to a performant implementation.
+Because of the way the Backdrop Root is defined (see [the spec](https://drafts.fxtf.org/filters-2/#BackdropRoot)), at step #1, only the nearest ancestor render surface is needed. No additional rasterization needs to take place, and this leads to a performant implementation.
 
 ## Example code
 Using backdrop-filter is easy. Assuming you want a dialog box that has a "frosted glass" look:
@@ -79,17 +79,17 @@ Using backdrop-filter is easy. Assuming you want a dialog box that has a "froste
 </style>
 ```
 
-[Here is a live demo](https://mfreed7.github.io/backdrop-filter-feature/examples/scrollable.html) showing the filtering effect applied to a dialog over a scrollable image. Note that to see the effect, you need to enable the "Experimental Web Platform Features" flag in Chrome.
+[Here is a live demo](https://mfreed7.github.io/backdrop-filter-feature/examples/scrollable.html) showing the filtering effect applied to a dialog over a scrollable image.
 
 
 ## The specification
-A [proposal specification](https://mfreed7.github.io/fxtf-drafts/filter-effects-2/Overview.html) has been [approved by the CSSWG](https://github.com/w3c/fxtf-drafts/issues/53#issuecomment-467152004) at the CSSWG SF F2F, on Feb 25, 2019. It contains much more detail than this page, including a large motivation section detailing the need for some of the restrictions included in the spec.
+The [specification](https://drafts.fxtf.org/filter-effects-2/#BackdropFilterProperty) was [approved by the CSSWG](https://github.com/w3c/fxtf-drafts/issues/53#issuecomment-467152004) at the CSSWG SF F2F, on Feb 25, 2019. It contains much more detail than this page, including a large motivation section detailing the need for some of the restrictions included in the spec.
 
 ## Chrome Status Entry
 The Chrome Platform Status entry is [here](https://www.chromestatus.com/features/5679432723333120).
 
 ## Alternatives
-The primary debate with respect to backdrop-filter lies in the specification of what exactly constitutes the "backdrop". There was significant debate about this, [spanning three years](https://github.com/w3c/fxtf-drafts/issues/53), with positions ranging from "it should filter everything on the page" to "it should only filter up to the containing stacking context". In the end, the solution being proposed here falls somewhere in the middle. It offers as much of the flexibility of the "it should filter everything" camp as possible, without incurring the intractability and performance problems of including filters, opacity, and masks. See [the Motivation section](https://mfreed7.github.io/fxtf-drafts/filter-effects-2/Overview.html#BackdropRootMotivation) of the spec for a much more detailed explanation of the trade-offs, including examples.
+The primary debate with respect to backdrop-filter lies in the specification of what exactly constitutes the "backdrop". There was significant debate about this, [spanning three years](https://github.com/w3c/fxtf-drafts/issues/53), with positions ranging from "it should filter everything on the page" to "it should only filter up to the containing stacking context". In the end, the solution described in the [spec](https://drafts.fxtf.org/filter-effects-2/#BackdropFilterProperty) falls somewhere in the middle. It offers as much of the flexibility of the "it should filter everything" camp as possible, without incurring the intractability and performance problems of including filters, opacity, and masks. See [the Motivation section](https://drafts.fxtf.org/filter-effects-2/#BackdropRootMotivation) of the spec for a much more detailed explanation of the trade-offs, including examples.
 
 ## Implementation
-This feature, as described in the spec, is implemented in chromium, hidden behind a flag: `--enable-experimental-web-platform-features`. 
+This feature, as described in the spec, is implemented in Chromium as of M76.
