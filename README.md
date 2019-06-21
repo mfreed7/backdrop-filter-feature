@@ -41,7 +41,7 @@ Note that this feature can be very performance-demanding. This is part of the re
 There are several often-cited examples for the use of this feature, including translucent dialog boxes, navigation headers, and other cool effects.
 
 Here are a few examples from around the web:
-* https://css-tricks.com/wp-content/uploads/2018/05/backdrop-demo.mp4
+* https://css-tricks.com/wp-content/uploads/2018/05/backdrop-demo.mp4 ([Live site here](https://codepen.io/robinrendle/full/LmzLEL))
 * https://youtu.be/MWHBpReeAJ0
 * https://www.apple.com (see the translucent navigation bar at the top)
 
